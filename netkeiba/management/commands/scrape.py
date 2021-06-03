@@ -46,8 +46,7 @@ class Command(BaseCommand):
         scrapy_settings = Settings()
         scrapy_settings.setmodule(settings, priority='project')
 
-        spider = DBRaceSpider(min_date=options.get('min_date'), max_date=options.get('max_date'))
         runner = CrawlerRunner({**scrapy_settings, **custom_settings})
-        d = runner.crawl(spider)
+        d = runner.crawl(DBRaceSpider, min_date=options.get('min_date'), max_date=options.get('max_date'))
         d.addBoth(lambda _: reactor.stop())
         reactor.run()
