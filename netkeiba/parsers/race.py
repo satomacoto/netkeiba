@@ -58,13 +58,29 @@ HORSE_SEX = {
     'セ': Horse.CASTRATED
 }
 
+RACE_TYPES = {
+    '2歳': Race.JUST2,
+    '3歳': Race.JUST3,
+    '4歳': Race.JUST4,
+    '3歳以上': Race.OVER3,
+    '4歳以上': Race.OVER4,
+    '5歳以上': Race.OVER5,
+    '障害3歳以上': Race.OVER3OBSTACLE,
+    '障害4歳以上': Race.OVER4OBSTACLE,
+}
+
 RACE_CLASSES = {
-    'オープン': Race.OPEN,
-    '1600万下': Race.U1600,
-    '1000万下': Race.U1000,
-    '500万下': Race.U500,
-    '未勝利': Race.MAIDEN,
     '新馬': Race.UNRACED_MAIDEN,
+    '未勝利': Race.MAIDEN,
+    '未出走': Race.UNRACED,
+    '1勝クラス': Race.W1,
+    '2勝クラス': Race.W2,
+    '3勝クラス': Race.W3,
+    '500万以下': Race.U500,
+    '900万以下': Race.U900,
+    '1000万以下': Race.U1000,
+    '1600万以下': Race.U1600,
+    'オープン': Race.OPEN,
 }
 
 POSITION_STATES = {
@@ -104,7 +120,7 @@ MARGINS = {
     '8': RaceContender.BS_08__0_0,
     '9': RaceContender.BS_09__0_0,
     '10': RaceContender.BS_10__0_0,
-    '大': RaceContender.HEAD,
+    '大': RaceContender.LARGE,
 }
 
 
@@ -120,6 +136,7 @@ class RaceParser(Parser):
                 'course': self._parse_course(),
                 'distance': self._parse_distance(),
                 'number': self._parse_number(),
+                'race_type': self._parse_race_type(),
                 'race_class': self._parse_race_class(),
                 'datetime': self._parse_datetime(),
                 'weather': self._parse_weather(),
@@ -301,6 +318,16 @@ class RaceParser(Parser):
     def _parse_number(self):
         string = self._soup.select_one('.mainrace_data .racedata dt').string.strip()
         return int(string.split(' ')[0])
+
+    def _parse_race_type(self):
+        match = None
+        if match is None:
+            race_terms = self._subtitle[-2]
+            for key in sorted(RACE_TYPES.keys())[::-1]:
+                if key in race_terms:
+                    match = RACE_TYPES[key]
+                    break
+        return match if match else Race.UNKNOWN
 
     def _parse_race_class(self):
         header = self._soup.select_one('.mainrace_data h1')

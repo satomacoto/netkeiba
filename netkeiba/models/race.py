@@ -55,25 +55,57 @@ class Race(BaseModel):
         (UNKNOWN, 'Unknown'),
     )
 
-    G1 = 'G1'
-    G2 = 'G2'
-    G3 = 'G3'
-    OPEN = 'OPEN'
-    U1600 = 'U1600'
-    U1000 = 'U1000'
-    U500 = 'U500'
-    MAIDEN = 'MAIDEN'
+    JUST2 = 'JUST2'
+    JUST3 = 'JUST3'
+    JUST4 = 'JUST4'
+    OVER3 = 'OVER3'
+    OVER4 = 'OVER4'
+    OVER5 = 'OVER5'
+    OVER3OBSTACLE = 'OVER3OBSTACLE'
+    OVER4OBSTACLE = 'OVER4OBSTACLE'
+
+    RACE_TYPE_CHOICES = (
+        (JUST2, 'JUST2'),
+        (JUST3, 'JUST3'),
+        (JUST4, 'JUST4'),
+        (OVER3, 'OVER3'),
+        (OVER4, 'OVER4'),
+        (OVER5, 'OVER5'),
+        (OVER3OBSTACLE, 'OVER3OBSTACLE'),
+        (OVER4OBSTACLE, 'OVER4OBSTACLE'),
+        (UNKNOWN, 'Unknown'),
+    )
+
     UNRACED_MAIDEN = 'UNRACED_MAIDEN'
+    MAIDEN = 'MAIDEN'
+    UNRACED = 'UNRACED'
+    W1 = 'W1'
+    W2 = 'W2'
+    W3 = 'W3'
+    U500 = 'U500'
+    U900 = 'U900'
+    U1000 = 'U1000'
+    U1600 = 'U1600'
+    OPEN = 'OPEN'
+    G3 = 'G3'
+    G2 = 'G2'
+    G1 = 'G1'
+
     RACE_CLASS_CHOICES = (
-        (G1, 'G1'),
-        (G2, 'G2'),
+        (UNRACED_MAIDEN, 'UNRACED_MAIDEN'),
+        (MAIDEN, 'MAIDEN'),
+        (UNRACED, 'UNRACED'),
+        (W1, 'W1'),
+        (W2, 'W2'),
+        (W3, 'W3'),
+        (U500, 'U500'),
+        (U900, 'U900'),
+        (U1000, 'U1000'),
+        (U1600, 'U1600'),
+        (OPEN, 'OPEN'),
         (G3, 'G3'),
-        (OPEN, 'Open'),
-        (U1600, 'Under 1600'),
-        (U1000, 'Under 1000'),
-        (U500, 'Under 500'),
-        (MAIDEN, 'Maiden'),
-        (UNRACED_MAIDEN, 'Unraced Maiden'),
+        (G2, 'G2'),
+        (G1, 'G1'),
         (UNKNOWN, 'Unknown'),
     )
 
@@ -122,6 +154,7 @@ class Race(BaseModel):
     course = models.CharField(max_length=255, choices=COURSE_CHOICES, default=UNKNOWN)
     distance = models.PositiveSmallIntegerField()
     number = models.PositiveSmallIntegerField()
+    race_type = models.CharField(max_length=255, choices=RACE_TYPE_CHOICES, default=UNKNOWN)
     race_class = models.CharField(max_length=255, choices=RACE_CLASS_CHOICES, default=UNKNOWN)
     datetime = models.DateTimeField()
     weather = models.CharField(max_length=255, choices=WEATHER_CHOICES, default=UNKNOWN)
